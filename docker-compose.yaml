@@ -16,7 +16,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: hw01-socialnetwork/Dockerfile
+      dockerfile: hw0-socialnetwork/Dockerfile
     container_name: social-network
     ports:
       - "8080:8080"

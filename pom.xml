@@ -24,6 +24,7 @@
     </developers>
     <modules>
         <module>hw01-socialnetwork</module>
+        <module>hw02-socialnetwork</module>
     </modules>
     <scm>
         <connection/>
