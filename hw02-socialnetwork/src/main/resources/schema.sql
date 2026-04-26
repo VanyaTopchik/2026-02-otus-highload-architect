@@ -10,3 +10,7 @@ CREATE TABLE IF NOT EXISTS users
     password_hash VARCHAR(60)  NOT NULL,
     token         UUID
 );
+
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
+CREATE INDEX IF NOT EXISTS idx_first_name_second_name_gin ON users USING gin (first_name gin_trgm_ops, second_name gin_trgm_ops);
