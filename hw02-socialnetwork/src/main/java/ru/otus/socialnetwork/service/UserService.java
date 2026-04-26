@@ -1,12 +1,15 @@
 package ru.otus.socialnetwork.service;
 
+import io.micrometer.common.util.StringUtils;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import ru.otus.socialnetwork.model.User;
 import ru.otus.socialnetwork.dto.UserResponse;
+import ru.otus.socialnetwork.model.User;
 import ru.otus.socialnetwork.repository.UserRepository;
 
 @Service
@@ -35,5 +38,24 @@ public class UserService {
         .biography(user.getBiography())
         .city(user.getCity())
         .build();
+  }
+
+  public List<UserResponse> searchUsers(String firstName, String lastName) {
+    if (StringUtils.isBlank(firstName) || StringUtils.isBlank(lastName)) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Both first_name and last_name are required");
+    }
+
+    List<User> users = userRepository.searchByFirstNameAndSecondName(firstName, lastName);
+    return users.stream()
+        .map(user -> UserResponse.builder()
+            .id(user.getId())
+            .firstName(user.getFirstName())
+            .secondName(user.getSecondName())
+            .gender(user.getGender())
+            .birthdate(user.getBirthdate())
+            .biography(user.getBiography())
+            .city(user.getCity())
+            .build())
+        .collect(Collectors.toList());
   }
 }

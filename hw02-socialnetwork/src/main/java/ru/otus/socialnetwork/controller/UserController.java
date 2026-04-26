@@ -1,5 +1,6 @@
 package ru.otus.socialnetwork.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.otus.socialnetwork.dto.RegisterRequest;
 import ru.otus.socialnetwork.dto.UserResponse;
@@ -31,5 +33,12 @@ public class UserController {
   @GetMapping("/get/{id}")
   public UserResponse getUser(@PathVariable String id) {
     return userService.getUserById(id);
+  }
+
+  @GetMapping("/search")
+  public List<UserResponse> search(
+      @RequestParam("first_name") String firstName,
+      @RequestParam("last_name") String lastName) {
+    return userService.searchUsers(firstName, lastName);
   }
 }

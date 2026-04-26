@@ -2,6 +2,7 @@ package ru.otus.socialnetwork.repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -85,5 +86,12 @@ public class UserRepository {
   public void updateToken(UUID userId, UUID token) {
     String sql = "UPDATE users SET token = ? WHERE id = ?";
     jdbcTemplate.update(sql, token, userId);
+  }
+
+  public List<User> searchByFirstNameAndSecondName(String firstNamePart, String lastNamePart) {
+    String sql = "SELECT * FROM users WHERE first_name ILIKE ? AND second_name ILIKE ?";
+    String firstNamePattern = "%" + firstNamePart + "%";
+    String lastNamePattern = "%" + lastNamePart + "%";
+    return jdbcTemplate.query(sql, rowMapper, firstNamePattern, lastNamePattern);
   }
 }
